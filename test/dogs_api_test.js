@@ -1,6 +1,6 @@
 'use strict';
 
-// process.env.MONGODB_URI = 'mongodb://localhost/dogs_test';
+process.env.MONGODB_URI = 'mongodb://localhost/dogs_test';
 require('../server.js');
 
 var mocha = require('mocha');
