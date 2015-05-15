@@ -5,18 +5,6 @@ var express = require('express');
 var app = express();
 var router = express.Router();
 
-//Setup mongoDB
-var mongoose = require('mongoose');
-var db = mongoose.connection;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/dog_development_db');
-
-db.on('error', function() {
-	console.log('connection error');
-});
-db.once('open', function() {
-	console.log('connection to Mongo DB successful');
-});
-
 //setup dogs routing
 require('./routes/dogs_routes')(router);
 

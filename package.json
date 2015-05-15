@@ -1,10 +1,10 @@
 {
   "name": "singleResourceRESTAPI",
   "version": "0.1.0",
-  "description": "Single resource REST Agit addPI with express that's backed by Mongo",
+  "description": "Single resource REST API with express that's backed by PostGres using sequelize",
   "main": "server.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha test/**/*test.js"
+    "test": "node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,8 @@
   "dependencies": {
     "body-parser": "^1.12.4",
     "express": "^4.12.3",
-    "mongoose": "^4.0.2"
+    "pg": "^4.3.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^2.1.3"
   }
 }
