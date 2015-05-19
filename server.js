@@ -3,7 +3,10 @@
 //Setup server using express
 var express = require('express');
 var app = express();
-var router = express.Router();
+var dogsRouter = express.Router();
+var usersRouter = express.Router();
+
+process.env.APP_SECRET = process.env.APP_SECRET || 'changethischangethischangethis';
 
 //Setup mongoDB
 var mongoose = require('mongoose');
@@ -17,11 +20,16 @@ db.once('open', function() {
 	console.log('connection to Mongo DB successful');
 });
 
-//setup dogs routing
-require('./routes/dogs_routes')(router);
+//Setup passport
+var passport = require('passport');
+app.use(passport.initialize());
+require('./lib/passport_strat')(passport);
 
-//api router
-app.use('/api', router);
+//setup routing
+require('./routes/dogs_routes')(dogsRouter);
+app.use('/api', dogsRouter);
+require('./routes/users_routes')(usersRouter, passport);
+app.use('/api', usersRouter);
 
 //404 Catch All
 app.use(function(req, res, next) {
