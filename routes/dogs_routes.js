@@ -2,6 +2,7 @@
 
 var bodyparser = require('body-parser');
 var Dog = require('../models/Dog');
+var eatAuth = require('../lib/eat_auth')(process.env.APP_SECRET);
 
 //Add data validation
 Dog.schema.path('name').validate(function(value) {
@@ -17,14 +18,14 @@ module.exports = function(router) {
 
 	router.use(bodyparser.json());
 
-	router.get('/dogs', function(req, res) {
+	router.get('/dogs', eatAuth, function(req, res) {
 		Dog.find({}, function(err, data) {
 			if (err) { return returnError(err, res); }
 			res.json(data);
 		});
 	});
 
-	router.put('/dogs/:id', function(req, res) {
+	router.put('/dogs/:id', eatAuth, function(req, res) {
 		var updatedDog = req.body;
 		delete updatedDog._id;
 		Dog.update({'_id': req.params.id}, updatedDog, function(err, data){
@@ -33,7 +34,7 @@ module.exports = function(router) {
 		});
 	});
 
-	router.post('/dogs', function(req, res) {
+	router.post('/dogs', eatAuth, function(req, res) {
 		var newDog = new Dog(req.body);
 		newDog.save(function(err, data) {
 			if (err) { return returnError(err, res); }
@@ -41,7 +42,7 @@ module.exports = function(router) {
 		});
 	});
 
-	router.delete('/dogs/:id', function(req, res) {
+	router.delete('/dogs/:id', eatAuth, function(req, res) {
 		Dog.remove({'_id': req.params.id}, function(err, data) {
 			if (err) { return returnError(err, res); }
 			res.json({msg: 'dog deleted'});

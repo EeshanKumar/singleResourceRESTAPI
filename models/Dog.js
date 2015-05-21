@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 
-var dogSchema = mongoose.Schema({
+var dogSchema = new mongoose.Schema({
 	name: String,
 	breed: String
 });
