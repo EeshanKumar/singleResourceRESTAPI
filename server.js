@@ -14,7 +14,7 @@ var db = mongoose.connection;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/dog_development_db');
 
 db.on('error', function() {
-	console.log('connection error');
+	console.log('Mongo DB connection error');
 });
 db.once('open', function() {
 	console.log('connection to Mongo DB successful');
@@ -25,7 +25,10 @@ var passport = require('passport');
 app.use(passport.initialize());
 require('./lib/passport_strat')(passport);
 
-//setup routing
+//Setup Client Side
+app.use(express.static('./build'));
+
+//setup api routing
 require('./routes/dogs_routes')(dogsRouter);
 app.use('/api', dogsRouter);
 require('./routes/users_routes')(usersRouter, passport);
