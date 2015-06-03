@@ -7,15 +7,8 @@
 <body data-ng-app="dogsApp">
 	<main data-ng-controller="dogsController" data-ng-init="getAllDogs()">
 		<h1>Dogs:</h1>
-		<aside data-ng-if="errors.length">
-			<h2>Errors:</h2>
-			<ul data-ng-repeat="error in errors">
-				<li>{{error.msg}}</li>
-			</ul>
-			<button data-ng-click="cleanErrors()">Clear Errors</button>
-		</aside>
 
-		<form name="newDog" data-ng-submit="saveNewDog()">
+		<form name="newDogForm" data-ng-submit="saveNewDog()">
 			<label>Name: <input type="text" required="required" data-ng-model="newDog.name"></label>
 			<label>Breed: <input type="text" required="required" data-ng-model="newDog.breed"></label>
 			<button type="submit" data-ng-disabled="newDogForm.$invalid">Save New Dog</button>
@@ -23,11 +16,28 @@
 
 		<ul data-ng-repeat="dog in dogs" >
 			<li><ul>
-				<li data-ng-if="dog.name">Name: {{dog.name}}</li>
-				<li data-ng-if="dog.breed">Breed: {{dog.breed}}</li>
-				<button data-ng-click="deleteDog(dog)">Delete Dog</button>
+				<div data-ng-if="!dog.editing">
+					<li>Name: {{dog.name}}</li>
+					<li>Breed: {{dog.breed}}</li>
+					<button data-ng-disabled="!dog._id" data-ng-click="deleteDog(dog)">Delete Dog</button>
+					<button data-ng-disabled="!dog._id" data-ng-click="editDog(dog)">Edit Dog</button>
+				</div>
+				<form name="editDogForm" data-ng-if="dog.editing" data-ng-submit="saveDogEdit(dog)">
+					<li><label>Name: <input type="text" required="required" data-ng-model="dog.name"></label></li>
+					<li><label>Breed: <input type="text" required="required" data-ng-model="dog.breed"></label></li>
+					<button type="submit">Save Changes</button>
+					<button data-ng-click="cancelEdit(dog)">Cancel</button>
+				</form>
 			</ul></li>
 		</ul>
+
+		<aside data-ng-if="errors.length">
+			<h2>Errors:</h2>
+			<ul data-ng-repeat="error in errors">
+				<li>{{error.msg}}</li>
+			</ul>
+			<button data-ng-click="cleanErrors()">Clear Errors</button>
+		</aside>
 
 	</main>
 	<script src="bundle.js"></script>
