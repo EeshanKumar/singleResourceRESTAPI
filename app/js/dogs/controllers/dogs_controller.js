@@ -62,7 +62,7 @@ module.exports = function(app) {
 		$scope.saveDogEdit = function(dog) {
 			dog.editing = false;
 			//Make request to server
-			$http.put('./api/dogs/' + dog._id)
+			$http.put('./api/dogs/' + dog._id, dog)
 				.success(function(data) {
 					//Clear old values
 					dog.old = {};
