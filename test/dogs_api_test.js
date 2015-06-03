@@ -50,18 +50,6 @@ describe('dogs REST API', function() {
 					done();
 				});
 		});
-
-		it('should have 500 server error on invalid data input', function(done) {
-			chai.request('localhost:3000')
-				.post('/api/dogs')
-  			.set({'eat': token})
-				.send({name: 'Brent'})
-				.end(function(err, res) {
-					expect(err).to.eql(null);
-					expect(res.body.msg).to.eql('internal server error');
-					done();
-				});
-		});
 	});
 
 	describe('tests that need existing dogs in the database', function() {

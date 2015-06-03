@@ -15,7 +15,7 @@ module.exports = function(router) {
 	router.get('/dogs', function(req, res) {
 		Dog.find({}, function(err, data) {
 			if (err) { return returnError(err, res); }
-			setTimeout(function() {res.json(data);}, 1000);
+			res.json(data);
 		});
 	});
 
@@ -24,7 +24,7 @@ module.exports = function(router) {
 		delete updatedDog._id;
 		Dog.update({'_id': req.params.id}, updatedDog, function(err, data){
 			if (err) { return returnError(err, res); }
-			setTimeout(function() {res.json({msg: 'dog updated'});}, 1000);
+			res.json({msg: 'dog updated'});
 		});
 	});
 
@@ -32,14 +32,14 @@ module.exports = function(router) {
 		var newDog = new Dog(req.body);
 		newDog.save(function(err, data) {
 			if (err) { return returnError(err, res); }
-			setTimeout(function() {res.json(data);}, 1000)
+			res.json(data);
 		});
 	});
 
 	router.delete('/dogs/:id', function(req, res) {
 		Dog.remove({'_id': req.params.id}, function(err, data) {
 			if (err) { return returnError(err, res); }
-			setTimeout(function() {res.json({msg: 'dog deleted'});}, 1000);
+			res.json({msg: 'dog deleted'});
 		});
 	});
 };
