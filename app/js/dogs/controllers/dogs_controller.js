@@ -40,7 +40,7 @@ module.exports = function(app) {
 			//Remove dog from client side
 			$scope.dogs.splice($scope.dogs.indexOf(dog), 1);
 			//Make request to server
-			$http.delete('./api/dogs/' + dog._id)
+			$http.delete('/api/dogs/' + dog._id)
 				.error(function(data) {
 					//On error, print errors, add to error array
 					console.log(data);
@@ -62,7 +62,7 @@ module.exports = function(app) {
 		$scope.saveDogEdit = function(dog) {
 			dog.editing = false;
 			//Make request to server
-			$http.put('./api/dogs/' + dog._id, dog)
+			$http.put('/api/dogs/' + dog._id, dog)
 				.success(function(data) {
 					//Clear old values
 					dog.old = {};

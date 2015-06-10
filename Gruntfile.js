@@ -6,6 +6,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-karma');
 
 	grunt.initConfig({
 		jshint: {
@@ -34,6 +35,13 @@ module.exports = function(grunt) {
 					path: 'build/',
 					file: 'bundle.js'
 				}
+			},
+			angular: {
+				entry:'./test/angular/entry_test.js',
+				output: {
+					path: 'test/angular/',
+					file: 'bundle.js'
+				}
 			}
 		},
 		copy: {
@@ -46,8 +54,13 @@ module.exports = function(grunt) {
 				filter: 'isFile'
 			}
 		},
+		karma: {
+			unit: {
+				configFile: 'karma.conf.js'
+			}
+		},
 		clean: {
-			dev: {rm 
+			dev: {
 				src: 'build/'
 			}
 		},
@@ -58,7 +71,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('linter', ['jshint:dev']);
-	grunt.registerTask('test', []);
+	grunt.registerTask('test', ['webpack:angular', 'karma']);
 	grunt.registerTask('build', ['webpack:client', 'copy:html']);
 	grunt.registerTask('cleanup', ['clean:dev']);
 	grunt.registerTask('default', ['linter', 'test']);
