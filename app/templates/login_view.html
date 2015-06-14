@@ -1,0 +1,16 @@
+<section data-ng-controller="authController">
+  <h1>Sign in with an existing user</h1>
+  <form data-ng-submit="authSubmit(user)">
+    <label>Email: <input type="text" name="email" data-ng-model="user.email" /></label>
+    <label>Password: <input type="password" nmae="password" data-ng-model="user.password" /></label>
+    <input type="submit" value="Sign In" />
+  </form>
+  <br/>
+  <button data-ng-click="redirectTo('create_new_user')">Create New User</button>
+  <aside data-ng-if="errors.length">
+    <h2>Errors:</h2>
+    <ul data-ng-repeat="error in errors">
+      <li>{{error.msg}}</li>
+    </ul>
+  </aside>
+</section>

@@ -10,6 +10,7 @@ module.exports = function(app) {
           console.log(err);
           return $scope.errors.push({msg: 'could not sign in user'});
         }
+        $location.path('/dogs');
       });
     };
 
@@ -19,11 +20,12 @@ module.exports = function(app) {
           console.log(err);
           return $scope.errors.push({msg: 'could not create user'});
         }
+        $location.path('/dogs');
       });
     };
 
-    $scope.logout = function() {
-      auth_service.logout();
-    }
+    $scope.redirectTo = function(link) {
+      $location.path('/' + link);
+    };
   }]);
 };
