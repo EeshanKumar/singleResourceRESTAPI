@@ -2,11 +2,11 @@
 
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-simple-mocha');
 	grunt.loadNpmTasks('grunt-webpack');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-karma');
 
 	grunt.initConfig({
 		jshint: {
@@ -27,11 +27,7 @@ module.exports = function(grunt) {
 					beforeEach: true
 				}
 			}
-		}, 
-		simplemocha: {
-			dev: {src: ['test/**/*.js']},
-			options: {timeout: 1000}
-		}, 
+		},
 		webpack: {
 			client: {
 				entry: './app/js/client.js',
@@ -40,13 +36,13 @@ module.exports = function(grunt) {
 					file: 'bundle.js'
 				}
 			},
-			test: {
-				entry: './test/client/test.js',
+			angular: {
+				entry:'./test/angular/entry_test.js',
 				output: {
-					path: 'test/client',
-					file: 'test_bundle.js'
+					path: 'test/angular/',
+					file: 'bundle.js'
 				}
-			},
+			}
 		},
 		copy: {
 			html: {
@@ -56,6 +52,11 @@ module.exports = function(grunt) {
 				src: '**/*.html',
 				dest: 'build/',
 				filter: 'isFile'
+			}
+		},
+		karma: {
+			unit: {
+				configFile: 'karma.conf.js'
 			}
 		},
 		clean: {
@@ -70,8 +71,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('linter', ['jshint:dev']);
-	grunt.registerTask('test', ['simplemocha:dev']);
-	grunt.registerTask('clientTest', ['webpack:test']);
+	grunt.registerTask('test', ['webpack:angular', 'karma']);
 	grunt.registerTask('build', ['webpack:client', 'copy:html']);
 	grunt.registerTask('cleanup', ['clean:dev']);
 	grunt.registerTask('default', ['linter', 'test']);
