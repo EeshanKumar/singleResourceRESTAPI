@@ -1,11 +1,13 @@
 'use strict';
 
 module.exports = function(app) {
-	app.controller('dogsController', ['$scope', '$http', function($scope, $http) {
+	app.controller('dogsController', ['$scope', '$http', '$cookies', function($scope, $http, $cookies) {
 		$scope.errors = [];
 		$scope.dogs = [];
 
 		$scope.getAllDogs = function() {
+      $http.defaults.headers.common.eat = $cookies.eat;
+
 			$http.get('/api/dogs')
 				.success(function(data) {
 					$scope.dogs = data;
@@ -16,6 +18,7 @@ module.exports = function(app) {
 		};
 
 		$scope.saveNewDog = function() {
+      $http.defaults.headers.common.eat = $cookies.eat;
 			//Clear entry in client side
 			var newDog = $scope.newDog;
 			$scope.newDog = null;

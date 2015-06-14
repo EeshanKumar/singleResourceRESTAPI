@@ -5,6 +5,33 @@
 	<title>Client Side</title>
 </head>
 <body data-ng-app="dogsApp">
+
+	<section data-ng-controller="authController">
+		<h1>Sign in with an existing user</h1>
+		<form data-ng-submit="authSubmit(user)">
+			<label>Email: <input type="text" name="email" data-ng-model="user.email" /></label>
+			<label>Password: <input type="password" nmae="password" data-ng-model="user.password" /></label>
+			<input type="submit" value="Sign In" />
+		</form>
+
+		<h1>Create new user</h1>
+		<form data-ng-submit="createNew(user)">
+			<label>Email: <input type="text" name="email" data-ng-model="user.email" /></label>
+			<label>Password: <input type="password" nmae="password" data-ng-model="user.password" /></label>
+			<input type="submit" value="Create User" />
+		</form>
+
+		<button data-ng-click="logout()">Log Out</button>
+
+
+		<aside data-ng-if="errors.length">
+			<h2>Errors:</h2>
+			<ul data-ng-repeat="error in errors">
+				<li>{{error.msg}}</li>
+			</ul>
+		</aside>
+	</section>
+
 	<main data-ng-controller="dogsController" data-ng-init="getAllDogs()">
 		<h1>Dogs:</h1>
 

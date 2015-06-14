@@ -2,7 +2,7 @@
 
 var bodyparser = require('body-parser');
 var Dog = require('../models/Dog');
-var eatAuth = require('../lib/eat_auth');
+var eatAuth = require('../lib/eat_auth')(process.env.APP_SECRET);
 
 function returnError(err, res) {
 	console.log(err);
