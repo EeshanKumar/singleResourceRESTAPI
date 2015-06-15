@@ -9,6 +9,7 @@ var dogsApp = angular.module('dogsApp', ['ngRoute', 'ngCookies', 'base64']);
 
 //Services
 require('./auth/auth_service')(dogsApp);
+require('./dogs/rest_service')(dogsApp);
 
 //Controllers
 require('./auth/auth_controller')(dogsApp);
@@ -16,6 +17,7 @@ require('./dogs/dogs_controller')(dogsApp);
 
 //Directives
 require('./auth/logout_directive')(dogsApp);
+require('./auth/login_form_directive')(dogsApp);
 
 dogsApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   var $cookies;

@@ -1,56 +1,54 @@
 'use strict';
 
 module.exports = function(app) {
-	app.controller('dogsController', ['$scope', '$http', '$cookies', function($scope, $http, $cookies) {
+	app.controller('dogsController', ['$scope', 'RESTResource', function($scope, rest) {
 		$scope.errors = [];
 		$scope.dogs = [];
+		var httpDog = rest('dogs');
 
 		$scope.getAllDogs = function() {
-      $http.defaults.headers.common.eat = $cookies.eat;
-
-			$http.get('/api/dogs')
-				.success(function(data) {
-					$scope.dogs = data;
-				})
-				.error(function(data) {
-					$scope.errors.push({msg: 'Error retrieving dogs'});
-				});
+			//Make request to server
+      httpDog.get(function(err, data) {
+				if (err) {
+					//add to error array
+					return $scope.errors.push({msg: 'Error retrieving dogs'});
+				}
+				//Return data to client side
+				$scope.dogs = data;
+      });
 		};
 
 		$scope.saveNewDog = function() {
-      $http.defaults.headers.common.eat = $cookies.eat;
 			//Clear entry in client side
 			var newDog = $scope.newDog;
 			$scope.newDog = null;
 			//Save new dog to client side
 			$scope.dogs.push(newDog);
 			//Make request to server
-			$http.post('/api/dogs', newDog)
-				.success(function(data) {
-					//Add returned dog to client side
-					$scope.dogs.splice($scope.dogs.indexOf(newDog), 1, data);
-				})
-				.error(function(data) {
-					//On error print errors, add to error array
-					console.log(data);
-					$scope.errors.push({msg: 'Error saving dog: ' + newDog.name });
+			httpDog.post(newDog, function(err, data) {
+				if (err) {
 					//Remove dog from client side array
 					$scope.dogs.splice($scope.dogs.indexOf(newDog), 1);
-				});
+					//add to error array
+					return $scope.errors.push({msg: 'Error saving dog: ' + newDog.name });
+				}
+					//Add returned dog to client side
+				$scope.dogs.splice($scope.dogs.indexOf(newDog), 1, data);
+			});
 		};
 
 		$scope.deleteDog = function(dog) {
 			//Remove dog from client side
 			$scope.dogs.splice($scope.dogs.indexOf(dog), 1);
 			//Make request to server
-			$http.delete('/api/dogs/' + dog._id)
-				.error(function(data) {
-					//On error, print errors, add to error array
-					console.log(data);
-					$scope.errors.push({msg: 'Error deleting dog: ' + dog.name});
+			httpDog.delete(dog, function(err, data) {
+				if (err) {
 					//Add dog back to client side array
 					$scope.dogs.push(dog);
-				});
+					//add to error array
+					return $scope.errors.push({msg: 'Error deleting dog: ' + dog.name});
+				}
+			});
 		};
 
 		$scope.editDog = function(dog) {
@@ -65,15 +63,15 @@ module.exports = function(app) {
 		$scope.saveDogEdit = function(dog) {
 			dog.editing = false;
 			//Make request to server
-			$http.put('/api/dogs/' + dog._id, dog)
-				.success(function(data) {
-					//Clear old values
-					dog.old = {};
-				}).error(function(data) {
-					console.log(data);
-					$scope.errors.push({msg: 'Could not save dog: ' + dog.name});
+			httpDog.put(dog, function(err, data) {
+				if (err) {
+					//Put old dog back into client side array
 					$scope.dogs.splice($scope.dogs.indexOf(dog), 1, dog.old)
-				});
+					//add to error array
+					return $scope.errors.push({msg: 'Could not save dog: ' + dog.name});
+				}
+				dog.old = {};
+			});
 		}
 
 		$scope.cancelEdit = function(dog) {

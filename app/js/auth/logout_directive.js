@@ -11,7 +11,6 @@ module.exports = function(app) {
         $scope.isSignedIn = function() {
           return auth.isSignedIn();
         };
-
         $scope.logout = function() {
           auth.logout();
           $location.path('/login');
