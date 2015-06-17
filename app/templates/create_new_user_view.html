@@ -1,10 +1,10 @@
 <section data-ng-controller="authController">
   <h1>Create new user</h1>
-  <form data-ng-submit="createNew(user)">
-    <label>Email: <input type="text" name="email" data-ng-model="user.email" /></label>
-    <label>Password: <input type="password" nmae="password" data-ng-model="user.password" /></label>
-    <input type="submit" value="Create User" />
-  </form>
+  <div data-my-login-form-directive
+    data-submit="createNew(user)"
+    data-submit-button-text="Create User"
+    data-user="user">
+  </div>
   <br/>
   <button data-ng-click="redirectTo('login')">Sign in with an existing user</button>
   <aside data-ng-if="errors.length">
